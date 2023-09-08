@@ -14,7 +14,7 @@ app.get('/api', (req, res) => {
     res.json({
         slack_name,
         current_day: days[day],
-        utc_time: currentDate.toISOString(),
+        utc_time: currentDate.toISOString().split('.')[0] + 'Z',
         track,
         github_file_url: 'https://github.com/Joshua-Nweze/HGNx/blob/main/Task_One/index.js',
         github_repo_url: 'https://github.com/Joshua-Nweze/HGNx/tree/main/Task_One',
