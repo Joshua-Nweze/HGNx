@@ -16,8 +16,8 @@ app.get('/', (req, res) => {
         current_day: days[day],
         utc_time: currentDate.toISOString(),
         track,
-        github_file_url: '',
-        github_repo_url: '',
+        github_file_url: 'https://github.com/Joshua-Nweze/HGNx/blob/main/Task_One/index.js',
+        github_repo_url: 'https://github.com/Joshua-Nweze/HGNx/tree/main/Task_One',
         status_code: 200
     })
 })
