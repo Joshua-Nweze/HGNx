@@ -4,16 +4,14 @@ async function createUser (req, res) {
     try {
         let { name } = req.body
 
+        if(!name || name.trim() == ''){
+            res.status(400).json({ message: 'Name is not valid' })
+            return
+        }
+
         const newUser = new User({
             name
         })
-
-        let existingUser = await User.findOne({name})
-
-        if (existingUser) {
-            res.status(500).json({ message: 'User with name exists, choose another name' })
-            return
-        }
 
         let createNewUser = await newUser.save()
 
@@ -48,10 +46,8 @@ async function updateUser(req, res){
         let { user_id } = req.params
         let { name } = req.body
 
-        let existingUser = await User.findOne({name})
-
-        if (existingUser) {
-            res.status(500).json({ message: 'User with name exists, choose another name' })
+        if(!name || name.trim() == ''){
+            res.status(400).json({ message: 'Name is not valid' })
             return
         }
 
@@ -60,12 +56,12 @@ async function updateUser(req, res){
             { name }
         )
 
-        if (!user) {
+        if (user) {
+            res.status(200).json({ message: 'User updated' })
+        } else {
             res.status(404).json({ message: 'User with ID not found' })
-            return
         }
 
-        res.status(200).json({ message: 'User updated' })
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong' })
     }
