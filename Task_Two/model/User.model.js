@@ -3,8 +3,7 @@ import {mongoose, Schema} from "mongoose";
 let userSchema = Schema({
     name: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     }
 })
 

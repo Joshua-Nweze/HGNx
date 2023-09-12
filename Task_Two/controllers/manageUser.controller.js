@@ -1,29 +1,95 @@
 import User from "../model/User.model.js"
 
-export default async function createUser (req, res) {
+async function createUser (req, res) {
     try {
         let { name } = req.body
-
-        // let user = await User.find({name: { $regex: name, $options: 'i' } })
-
-        // if (user) {
-        //     res.status(500).json({ message: `User with name ${name} already exists` })
-        //     return
-        // }
 
         const newUser = new User({
             name
         })
 
+        let existingUser = await User.findOne({name})
+
+        if (existingUser) {
+            res.status(500).json({ message: 'User with name exists, choose another name' })
+            return
+        }
+
         let createNewUser = await newUser.save()
 
         if (createNewUser) {
-            res.json(201).json({ message: 'User created successfully' })
-        } else{
+            res.status(201).json({ message: 'User created successfully', newUser: {id: createNewUser._id, name: createNewUser.name} })
+        } else {
             res.status(500).json({ message: 'Something went wrong' })
         }
     } catch (error) {
-        console.log(error)
         res.status(500).json({ message: 'Something went wrong' })
     }
+}
+
+async function getUser(req, res){
+    try {
+        let { user_id } = req.params
+
+        let user = await User.findById(user_id)
+
+        if (user) {
+            res.status(200).json({user})
+        } else {
+            res.status(404).json({message: 'User with ID not found'})
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong' })
+    }
+}
+
+async function updateUser(req, res){
+    try {
+        let { user_id } = req.params
+        let { name } = req.body
+
+        let existingUser = await User.findOne({name})
+
+        if (existingUser) {
+            res.status(500).json({ message: 'User with name exists, choose another name' })
+            return
+        }
+
+        let user = await User.updateOne(
+            { _id: user_id },
+            { name }
+        )
+
+        if (!user) {
+            res.status(404).json({ message: 'User with ID not found' })
+            return
+        }
+
+        res.status(200).json({ message: 'User updated' })
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong' })
+    }
+}
+
+async function deleteUser(req, res){
+    try {
+        let { user_id } = req.params
+
+        let user = await User.findByIdAndDelete(user_id)
+
+        if (user) {
+            res.status(200).json({ message: 'User deleted' })
+        } else {
+            res.status(404).json({ message: 'User with ID not found' })
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong' })
+    }
+}
+
+export default {
+    createUser,
+    getUser,
+    updateUser,
+    deleteUser
 }
