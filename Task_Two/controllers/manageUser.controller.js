@@ -4,6 +4,11 @@ async function createUser (req, res) {
     try {
         let { name } = req.body
 
+        if ( typeof name !== 'string') {
+            res.status(400).json({ message: 'Name must be a String' })
+            return
+        }
+
         if(!name || name.trim() == ''){
             res.status(400).json({ message: 'Name is not valid' })
             return
@@ -45,6 +50,11 @@ async function updateUser(req, res){
     try {
         let { user_id } = req.params
         let { name } = req.body
+
+        if ( typeof name !== 'string') {
+            res.status(400).json({ message: 'Name must be a String' })
+            return
+        }
 
         if(!name || name.trim() == ''){
             res.status(400).json({ message: 'Name is not valid' })
