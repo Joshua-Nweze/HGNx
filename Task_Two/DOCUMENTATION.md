@@ -95,6 +95,7 @@ Expected response:
 **URL**: /api/<user_id>
 
 **Request parameter** : <user_id>
+
 <user_id> is the ID of the user you want to get.
 
 Example:
