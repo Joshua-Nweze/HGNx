@@ -37,7 +37,7 @@ async function getUser(req, res){
         let user = await User.findById(user_id)
 
         if (user) {
-            res.status(200).json({user})
+            res.status(200).json({id: user._id, name: user.name})
         } else {
             res.status(404).json({message: 'User with ID not found'})
         }
