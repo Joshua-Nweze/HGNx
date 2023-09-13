@@ -36,7 +36,7 @@ The DELETE request is used to delete a resource in the database.
 
 ## Getting started
 
-Base URL: ...
+Base URL: https://repulsive-sandals-tick.cyclic.app
 
 ## Endpoints
 
@@ -65,8 +65,8 @@ Example:
     {
 	    "name": "John Doe"
     }
+NOTE: 'name' must be a string
 
-  
 Expected response:
 ```
 {
@@ -77,7 +77,6 @@ Expected response:
 	}
 }
 ```
-NOTE: 'name' must be a string
 
 **Response status**:
 
@@ -138,8 +137,8 @@ api/12345
 Expected response:
 
     {
-		"message":  "User updated"
-	}
+	"message":  "User updated"
+    }
 
 **Request body**:
 
