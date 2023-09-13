@@ -17,19 +17,19 @@ Before you begin, ensure you have the following installed:
    https://github.com/Joshua-Nweze/HGNx.git
    ```
 
+**Navigate to task two directory**
+
+```bash
+cd Task_Two
+```
+
 ## Setup
 
 Make sure to install the dependencies:
 
 ```bash
-# yarn
-yarn install
-
 # npm
 npm install
-
-# pnpm
-pnpm install
 ```
 
 ## Development Server
