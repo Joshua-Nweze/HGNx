@@ -60,7 +60,7 @@ The POST request is used to add a resource to the database.
 
 ## Getting started
 
-Base URL: https://repulsive-sandals-tick.cyclic.app
+<!-- Base URL: https://repulsive-sandals-tick.cyclic.app -->
 
 ## Endpoints
 
