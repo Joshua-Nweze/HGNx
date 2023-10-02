@@ -1,6 +1,6 @@
 import express from "express"
 import multer from "multer"
-let upload = multer({ dest: 'upload' })
+let upload = multer({ dest: 'upload',  })
 
 import videoController from '../controller/video.controller.js'
 
