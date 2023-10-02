@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 // route
 app.use('/video', videoRoutes)
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.DB_URI)
     .then(() => {
         app.listen(3000, () => {
             console.log('Server running in port 3000')
