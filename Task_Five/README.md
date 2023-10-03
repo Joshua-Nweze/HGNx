@@ -99,14 +99,38 @@ Expected response:
 
 **URL**: /video/<video_id>
 
-**Request parameter** : <user_id>
+**Request parameter** : <video_id>
 
-<user_id> is the ID of the user you want to get.
+<video_id> is the ID of the user you want to get.
 
 Example:
 
 ```
 video/12345
+```
+
+**3. Getting a resource info**
+
+**HTTP method**: GET
+
+**URL**: /video/info/<video_id>
+
+**Request parameter** : <video_id>
+
+<video_id> is the ID of the user you want to get.
+
+Example:
+
+```
+video/info/12345
+```
+
+Expected response:
+```
+{
+    "videoId": "12345",
+    "created": "2023-10-03T23:10:11.958Z"
+}
 ```
 
   ## Setting up in local server

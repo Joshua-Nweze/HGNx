@@ -10,9 +10,6 @@ async function uploadVideo(req, res) {
             return res.status(400).json({ message: 'No file uploaded' });
         }
 
-        console.log(req.body)
-        console.log(req.file)
-
         const video = new Video({
             name: req.file.originalname,
             video: req.file.path
@@ -94,7 +91,27 @@ async function getVideo(req, res){
     }
 }
 
+async function getVideoInfo (req, res) {
+    try {
+        let {id} = req.params
+
+        let video = await Video.findById(id)
+
+        if(video){
+            res.status(200).json({
+                videoId: video._id,
+                created: video.createdAt
+            })
+        } else {
+            res.status(404).json({ message: 'Video not found' })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export default {
     uploadVideo,
-    getVideo
+    getVideo,
+    getVideoInfo
 }

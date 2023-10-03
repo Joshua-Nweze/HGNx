@@ -9,7 +9,7 @@ let videoSchema = Schema({
         type: Buffer,
         required: true
     }
-})
+}, {timestamps: true})
 
 let Video = mongoose.model('Video', videoSchema)
 

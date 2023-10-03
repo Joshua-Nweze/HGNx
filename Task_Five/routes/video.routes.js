@@ -1,4 +1,4 @@
-import express from "express"
+import express, { application } from "express"
 import multer from "multer"
 // let upload = multer({ dest: 'upload',  })
 
@@ -23,11 +23,12 @@ const storage = multer.diskStorage({
 
 import videoController from '../controller/video.controller.js'
 
-let { uploadVideo, getVideo } = videoController
+let { uploadVideo, getVideo, getVideoInfo } = videoController
 
 let router = express.Router()
 
 router.get('/:id', getVideo)
 router.post('/upload', upload.single('video'), uploadVideo)
+router.get('/info/:id', getVideoInfo)
 
 export default router
