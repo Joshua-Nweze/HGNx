@@ -6,14 +6,11 @@ import dbOperations from '../dbOpreations/dbOperations.js';
 
 let { saveToDb, getFileById, deleteFile } = dbOperations
 
-const downloadVideo = async (req, res) => {
+async function downloadVideo (req, res) {
   const videoId = req.params.id;
-  // const mimeType = req.headers['content-type'];
 
   if (!mongoose.Types.ObjectId.isValid(videoId)) {
-    return res.status(400).json({
-      message: 'Not a valid mongoose id',
-    });
+    return res.status(400).json({ message: 'Not a valid mongoose id' });
   }
 
   try {
@@ -24,34 +21,28 @@ const downloadVideo = async (req, res) => {
       });
     }
 
-    // Set the filetype in the data base to a specific video format
     video.set('mimeType', 'video/webm');
     await video.save();
 
     // Get chunks of data from client
-    const chunks = [];
+    const videoChunks = [];
     req.on('data', (chunk) => {
-      chunks.push(chunk);
+      videoChunks.push(chunk);
     });
 
     req.on('end', async () => {
-      // Combine all received chunks into a single buffer array
-      const dataBuffer = Buffer.concat(chunks);
+      const dataBuffer = Buffer.concat(videoChunks);
 
       // Save to a local file in the server
       await saveToDb(dataBuffer, videoId);
     });
-    return res.json({
-      message: `Chunks of data for videoId ${video._id} recieved`,
-    });
+    return res.json({  message: `Chunks of data for videoId ${video._id} recieved`});
   } catch (error) {
-    res.json({
-      message: 'Something went wrong',
-    });
+    res.json({ message: 'Something went wrong, try again later' });
   }
 };
 
-const finalVideoChunk = async (req, res) => {
+async function finalVideoChunk (req, res) {
   try {
     const videoId = req.params.id;
 
@@ -61,9 +52,7 @@ const finalVideoChunk = async (req, res) => {
 
     const videoData = await Video.findById({ _id: videoId });
     if (!videoData) {
-      return res.status(404).json({
-        message: 'Video file missing',
-      });
+      return res.status(404).json({  message: 'Video file missing' });
     }
 
     const chunks = [];
@@ -72,7 +61,6 @@ const finalVideoChunk = async (req, res) => {
     });
 
     req.on('end', async () => {
-      // Combine all received chunks into a single buffer
       const dataBuffer = Buffer.concat(chunks);
 
       await saveToDb(dataBuffer, videoId);
@@ -80,41 +68,30 @@ const finalVideoChunk = async (req, res) => {
 
     const binaryArray = await getFileById(videoId);
 
-    //convert the binaryArray to a buffer
     const videoBuffer = Buffer.from(binaryArray);
 
     if (Buffer.isBuffer(videoBuffer)) {
-      // The Buffer is converted back to a videofile and saved to the saver
       fs.writeFile(`./videos/${videoId}.webm`, videoBuffer, async (err) => {
         if (err) {
           return res.json({ message: err });
         } else {
           const link = `http://${req.hostname}:${process.env.PORT}/video/play/${videoId}.webm`;
 
-          // update the url and blob fields in the mongoose model
           videoData.set({
             url: link,
           });
           await videoData.save();
 
-          //Once buffer ias been decoded back to the orinal video file, delete the buffer file in mememory
           await deleteFile(videoId);
 
-          return res.json({
-            message: 'Video saved',
-            status: 200,
-          });
+          return res.status(200).json({ message: 'Video saved' });
         }
       });
     } else {
-      return res.json({
-        message: 'Buffer not valid',
-      });
+      return res.json({message: 'Buffer not valid',});
     }
   } catch (error) {
-    res.status(500).json({
-      message: 'Something went wrong',
-    });
+    res.status(500).json({ message: 'Something went wrong' });
   }
 };
 

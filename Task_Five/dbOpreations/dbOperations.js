@@ -2,18 +2,18 @@ import path from 'path';
 import { read } from 'fs';
 import fs from 'fs'
 
-const saveToDb = async (data, id) => {
+async function saveToDb (data, id) {
   try {
-    let currentData = await fs.readdir('./dB');
+    let currData = await fs.readdir('./dB');
 
-    const file = currentData.filter((item) => item === `${id}.json`);
+    const file = currData.filter((item) => item === `${id}.json`);
 
     if (file.length > 0) {
-      let currentData = await fs.readFile(`./dB/${id}.json`, {
+      let currData = await fs.readFile(`./dB/${id}.json`, {
         encoding: 'utf-8',
       });
 
-      let parsedData = JSON.parse(currentData);
+      let parsedData = JSON.parse(currData);
 
       if (parsedData.length < 1) {
         parsedData = [];
@@ -21,21 +21,21 @@ const saveToDb = async (data, id) => {
 
       // Update data in the object
       parsedData.push(data);
-      currentData = JSON.stringify(parsedData);
+      currData = JSON.stringify(parsedData);
 
-      return await fs.writeFile(`./dB/${id}.json`, currentData, 'utf-8');
+      return await fs.writeFile(`./dB/${id}.json`, currData, 'utf-8');
     }
 
     //convert the modified object back to JSON
-    currentData = JSON.stringify([data]);
+    currData = JSON.stringify([data]);
 
-    await fs.writeFile(`./dB/${id}.json`, currentData, 'utf-8');
+    await fs.writeFile(`./dB/${id}.json`, currData, 'utf-8');
   } catch (error) {
     throw error;
   }
 };
 
-const getFileById = async (fileId) => {
+async function getFileById (fileId) {
   let fileDirectory = await fs.readdir('./dB');
 
   const file = fileDirectory.filter((item) => item === `${fileId}.json`);
@@ -48,17 +48,17 @@ const getFileById = async (fileId) => {
 
   const parsedFile = JSON.parse(fileToRead);
 
-  const extractedBuffArr = [];
+  const extractedBufferArr = [];
   for (const singleBuff of parsedFile) {
     for (const eachData of singleBuff.data) {
-      extractedBuffArr.push(eachData);
+      extractedBufferArr.push(eachData);
     }
   }
 
-  return extractedBuffArr;
+  return extractedBufferArr;
 };
 
-const deleteFile = async (fileId) => {
+async function deleteFile (fileId) {
   let fileDirectory = await fs.readdir('./dB');
 
   const file = fileDirectory.find((item) => item === `${fileId}.json`);
