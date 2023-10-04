@@ -2,6 +2,10 @@ import mongoose from 'mongoose'
 import Video from '../model/video.model.js'
 import fs from 'fs'
 
+import dbOperations from '../dbOpreations/dbOperations.js';
+
+let { saveToDb, getFileById, deleteFile } = dbOperations
+
 const downloadVideo = async (req, res) => {
   const videoId = req.params.id;
   // const mimeType = req.headers['content-type'];
